@@ -97,50 +97,51 @@ public sealed class December1 : IPuzzle
         return result;
     }
 
-    public static int Task2(IEnumerable<string> input)
-    {
-        var numbers = new Dictionary<string, int>
-        {
-            { "one", 1 },
-            { "1", 1 },
-            { "two", 2 },
-            { "2", 2 },
-            { "three", 3 },
-            { "3", 3 },
-            { "four", 4 },
-            { "4", 4 },
-            { "five", 5 },
-            { "5", 5 },
-            { "six", 6 },
-            { "6", 6 },
-            { "seven", 7 },
-            { "7", 7 },
-            { "eight", 8 },
-            { "8", 8 },
-            { "nine", 9 },
-            { "9", 9 }
-        };
-        var result = 0;
-        foreach (var line in input)
-        {
-            var searchResult = new Dictionary<int, int>();
-
-            foreach (var k in numbers)
+    public static int Task2(IEnumerable<string> input) =>
+        input
+            .AsParallel()
+            .Select(line =>
             {
-                var index = 0;
-                while ((index = line.IndexOf(k.Key, index, StringComparison.Ordinal)) != -1)
-                {
-                    searchResult.Add(index++, k.Value);
-                }
-            }
+                var searchResult = new Dictionary<int, int>();
 
-            var min = searchResult.Min(x => x.Key);
-            var max = searchResult.Max(x => x.Key);
-            var minValue = searchResult[min];
-            var maxValue = searchResult[max];
-            var resultingNumber = int.Parse($"{minValue}{maxValue}");
-            result += resultingNumber;
-        }
-        return result;
-    }
+                foreach (var k in s_numbers)
+                {
+                    var index = 0;
+                    while ((index = line.IndexOf(k.Key, index, StringComparison.Ordinal)) != -1)
+                    {
+                        searchResult.Add(index++, k.Value);
+                    }
+                }
+
+                var min = searchResult.Keys.Min();
+                var max = searchResult.Keys.Max();
+                var minValue = searchResult[min];
+                var maxValue = searchResult[max];
+                var resultingNumber = int.Parse($"{minValue}{maxValue}");
+                return resultingNumber;
+            })
+            .Sum();
+
+    private static FrozenDictionary<string, int> s_numbers = new Dictionary<string, int>()
+    {
+        { "one", 1 },
+        { "1", 1 },
+        { "two", 2 },
+        { "2", 2 },
+        { "three", 3 },
+        { "3", 3 },
+        { "four", 4 },
+        { "4", 4 },
+        { "five", 5 },
+        { "5", 5 },
+        { "six", 6 },
+        { "6", 6 },
+        { "seven", 7 },
+        { "7", 7 },
+        { "eight", 8 },
+        { "8", 8 },
+        { "nine", 9 },
+        { "9", 9 }
+    }.ToFrozenDictionary();
+
 }
