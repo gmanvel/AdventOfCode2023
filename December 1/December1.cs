@@ -19,33 +19,47 @@ public sealed class December1 : IPuzzle
 
     }.ToFrozenDictionary();
 
-    private static Regex s_numberWordsRegex = new ("(one|two|three|four|five|six|seven|eight|nine)", RegexOptions.Compiled);
+    private static Regex s_numberWordsRegex = new ("(?=(1|one|2|two|3|three|4|four|5|five|6|six|7|seven|8|eight|9|nine))", RegexOptions.Compiled);
 
     public void Solve(object input)
     {
         if (input is not IEnumerable<string> lines)
             throw new ArgumentException(nameof(lines));
 
-        Console.WriteLine(GetAnswer(lines));
+        Console.WriteLine(Calculate_2(lines));
     }
 
-    private static string Sanitize(string line)
+    private static int Convert(string line)
     {
-        foreach (Match match in s_numberWordsRegex.Matches(line))
-        {
-            if (!s_lookup.TryGetValue(match.Value, out var replacement))
-                continue;
+        var matches = s_numberWordsRegex.Matches(line).ToList();
 
-            line = line.Replace(match.Value, replacement);
-        }
+        if (matches.Count == 0)
+            return 0;
 
-        return line;
+        var firstOccurrence = matches.First().Groups.Values.First(v => !string.IsNullOrEmpty(v.Value));
+
+        var firstDigit = firstOccurrence.Value;
+        if (s_lookup.TryGetValue(firstOccurrence.Value, out var firstReplacement))
+            firstDigit = firstReplacement;
+
+        var lastOccurrence = matches.Last().Groups.Values.First(v => !string.IsNullOrEmpty(v.Value));
+
+        var lastDigit = lastOccurrence.Value;
+        if (s_lookup.TryGetValue(lastOccurrence.Value, out var lastReplacement))
+            lastDigit = lastReplacement;
+        
+        return int.Parse($"{firstDigit}{lastDigit}");
     }
 
-    private static int GetAnswer(IEnumerable<string> lines) =>
+    private static int Calculate_2(IEnumerable<string> lines) =>
         lines
             .AsParallel()
-            .Select(Sanitize)
+            .Select(Convert)
+            .Sum();
+
+    private static int Calculate_1(IEnumerable<string> lines) =>
+        lines
+            .AsParallel()
             .Select(line =>
             {
                 var firstNumberPosition = line.AsSpan().IndexOfAnyInRange('0', '9');

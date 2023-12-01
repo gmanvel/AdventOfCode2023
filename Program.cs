@@ -8,4 +8,3 @@ var input = File.ReadAllLines(
 
 IPuzzle puzzle = new December1();
 puzzle.Solve(input);
-
