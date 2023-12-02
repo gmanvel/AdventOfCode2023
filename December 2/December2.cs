@@ -15,12 +15,20 @@ public class December2 : IPuzzle
 
     private static readonly Regex s_colorValueRegex = new(@"(\d+)\s+(red|blue|green)", RegexOptions.Compiled);
         
-    public void Solve(object input)
+    public void SolvePart1(object input)
     {
         if (input is not IEnumerable<string> values)
             throw new ArgumentException(nameof(input));
         
         Console.WriteLine(GetGameIdSum(values));
+    }
+
+    public void SolvePart2(object input)
+    {
+        if (input is not IEnumerable<string> values)
+            throw new ArgumentException(nameof(input));
+        
+        Console.WriteLine(GetSumOfSetPowers(values));
     }
 
     private static int GetGameIdSum(IEnumerable<string> values) =>
@@ -56,7 +64,6 @@ public class December2 : IPuzzle
                 if (s_maxAllowedAmount.TryGetValue(color, out var maxAmount) &&
                     number > maxAmount)
                 {
-                    Console.WriteLine($"Game #{gameId}: {number} {color} > {maxAmount} max allowed.");
                     ArrayPool<Range>.Shared.Return(ranges);
                     return 0;
                 }
@@ -65,5 +72,55 @@ public class December2 : IPuzzle
 
         ArrayPool<Range>.Shared.Return(ranges);
         return gameId;
+    }
+
+    private static int GetSumOfSetPowers(IEnumerable<string> lines) =>
+        lines
+            .AsParallel()
+            .Select(GetSumOfASetPowers)
+            .Sum();
+
+    private static int GetSumOfASetPowers(string line)
+    {
+        var indexOfColon = line.IndexOf(':');
+        
+        var data = line.AsSpan().Slice(indexOfColon);
+        var semicolonCount = data.Count(';');
+
+        var ranges = ArrayPool<Range>.Shared.Rent(semicolonCount + 1); 
+    
+        data.Split(ranges.AsSpan(), ';', StringSplitOptions.RemoveEmptyEntries);
+
+        int? red = null;
+        int? green = null;
+        int? blue = null;
+            
+        for (int index = 0; index <= semicolonCount; index++)
+        {
+            var range = ranges[index];
+
+            var chunk = data[range];
+
+            foreach (Match match in s_colorValueRegex.Matches(chunk.ToString()))
+            {
+                var number = int.Parse(match.Groups[1].ValueSpan);
+                var color = match.Groups[2].Value;
+
+                if (color == "red")
+                {
+                    red = red is not null ? Math.Max(red.Value, number) : number;
+                }
+                else if (color == "blue")
+                {
+                    blue = blue is not null ? Math.Max(blue.Value, number) : number;
+                }
+                else if (color == "green")
+                {
+                    green = green is not null ? Math.Max(green.Value, number) : number;
+                }
+            }
+        }
+
+        return red!.Value * green!.Value * blue!.Value;
     }
 }

@@ -8,4 +8,5 @@ var input = File.ReadAllLines(
         "Dec2_Input.txt"));
 
 IPuzzle puzzle = new December2();
-puzzle.Solve(input);
+puzzle.SolvePart1(input);
+puzzle.SolvePart2(input);

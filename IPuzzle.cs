@@ -2,5 +2,7 @@
 
 internal interface IPuzzle
 {
-    void Solve(object input);
+    void SolvePart1(object input);
+
+    void SolvePart2(object input);
 }

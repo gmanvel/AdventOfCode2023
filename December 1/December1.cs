@@ -21,7 +21,15 @@ public sealed class December1 : IPuzzle
 
     private static Regex s_numberWordsRegex = new ("(?=(1|one|2|two|3|three|4|four|5|five|6|six|7|seven|8|eight|9|nine))", RegexOptions.Compiled);
 
-    public void Solve(object input)
+    public void SolvePart1(object input)
+    {
+        if (input is not IEnumerable<string> lines)
+            throw new ArgumentException(nameof(lines));
+
+        Console.WriteLine(Calculate_1(lines));
+    }
+
+    public void SolvePart2(object input)
     {
         if (input is not IEnumerable<string> lines)
             throw new ArgumentException(nameof(lines));
