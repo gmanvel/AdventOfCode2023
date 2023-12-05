@@ -16,4 +16,9 @@ internal static class DictionaryExtensions
 
         return value;
     }
+
+    public static int GetValueOrSelf(this Dictionary<int, int> dictionary, int key) =>
+        dictionary.TryGetValue(key, out var value)
+        ? value
+        : key;
 }
