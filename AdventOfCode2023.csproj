@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="benchmark\**" />
+    <EmbeddedResource Remove="benchmark\**" />
+    <None Remove="benchmark\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="December 1\Dec1_Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -20,10 +26,9 @@
     <None Update="December 7\Dec7_Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="benchmark\" />
+    <None Update="December 8\Dec8_Input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 
