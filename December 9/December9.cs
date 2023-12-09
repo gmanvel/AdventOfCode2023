@@ -66,14 +66,14 @@ public class December9 : IPuzzle
                     }
 
                     var count = lists.Count;
-                    var firstEl = lists[count - 2][0] - lists[count - 1][0];
+                    var firstNumber = lists[count - 2][0] - lists[count - 1][0];
         
                     for (var index = lists.Count - 3; index >= 0; index--)
                     {
-                        firstEl = lists[index][0] - firstEl;
+                        firstNumber = lists[index][0] - firstNumber;
                     }
 
-                    return firstEl;
+                    return firstNumber;
                 })
                 .Sum());
     }
