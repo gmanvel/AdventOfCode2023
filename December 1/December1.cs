@@ -1,7 +1,7 @@
 ﻿using System.Collections.Frozen;
 using System.Text.RegularExpressions;
 
-namespace AdventOfCode2023;
+namespace AdventOfCode2023.December_1;
 
 public sealed class December1 : IPuzzle
 {
