@@ -9,7 +9,17 @@ var inputStr = File.ReadAllLines(
         "December 10",
         "Dec10_Input.txt"));
 
-char[,] pipes = new char[140, 140];
+//var inputStr =
+//@"..F7.
+//.FJ|.
+//SJ.L7
+//|F--J
+//LJ..."
+//    .Split(Environment.NewLine);
+
+char[,] pipes =
+    //new char[5, 5];
+    new char[140, 140];
 
 (int, int) startPosition = (0, 0);
 for (var index = 0; index < inputStr.Length; index++)

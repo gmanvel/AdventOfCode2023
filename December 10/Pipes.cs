@@ -100,7 +100,7 @@ public class LeftLPipe : IPipe
 
         return nextPipe switch
         {
-            '|' => new RightHorizontalPipe(nextPosition),
+            '|' => new UpPipe(nextPosition),
             '7' => new Up7Pipe(nextPosition),
             'F' => new UpFPipe(nextPosition),
             'S' => new Start(),
@@ -154,7 +154,7 @@ public class RightJPipe : IPipe
         {
             '|' => new UpPipe(nextPosition),
             '7' => new Up7Pipe(nextPosition),
-            'F' => new Up7Pipe(nextPosition),
+            'F' => new UpFPipe(nextPosition),
             'S' => new Start(),
             _ => new DeadEnd()
         };
@@ -282,7 +282,7 @@ public class LeftHorizontalPipe : IPipe
 
         return nextPipe switch
         {
-            '_' => new LeftHorizontalPipe(nextPosition),
+            '-' => new LeftHorizontalPipe(nextPosition),
             'L' => new LeftLPipe(nextPosition),
             'F' => new LeftFPipe(nextPosition),
             'S' => new Start(),
@@ -308,7 +308,7 @@ public class RightHorizontalPipe : IPipe
 
         return nextPipe switch
         {
-            '_' => new RightHorizontalPipe(nextPosition),
+            '-' => new RightHorizontalPipe(nextPosition),
             '7' => new Right7Pipe(nextPosition),
             'J' => new RightJPipe(nextPosition),
             'S' => new Start(),
