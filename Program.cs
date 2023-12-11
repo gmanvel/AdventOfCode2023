@@ -1,29 +1,12 @@
 ﻿using AdventOfCode2023;
-using AdventOfCode2023.December_10;
+using AdventOfCode2023.December_11;
 
-var inputStr = File.ReadAllLines(
+var input = File.ReadAllLines(
     Path.Combine(
         AppDomain.CurrentDomain.BaseDirectory,
-        "December 10",
-        "Dec10_Input.txt"));
+        "December 11",
+        "Dec11_Input.txt"));
 
-char[,] pipes =
-    new char[140, 140];
-
-(int, int) startPosition = (0, 0);
-for (var index = 0; index < inputStr.Length; index++)
-{
-    for (var jindex = 0; jindex < inputStr[index].Length; jindex++)
-    {
-        var pipe = inputStr[index][jindex];
-        if (pipe == 'S')
-        {
-            startPosition = (index, jindex);
-        }
-        pipes[index, jindex] = inputStr[index][jindex];
-    }
-}
-
-IPuzzle puzzle = new December10();
-puzzle.SolvePart1(new Dec10Input(pipes, startPosition));
-// puzzle.SolvePart2(input);
+IPuzzle puzzle = new December11();
+puzzle.SolvePart1(input);
+puzzle.SolvePart2(input);

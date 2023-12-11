@@ -11,6 +11,9 @@
     <Compile Remove="benchmark\**" />
     <EmbeddedResource Remove="benchmark\**" />
     <None Remove="benchmark\**" />
+    <None Update="December 11\Dec11_Input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="December 9\Dec9_Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
