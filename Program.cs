@@ -1,4 +1,6 @@
-﻿using AdventOfCode2023;
+﻿using System.Buffers;
+using System.Runtime.CompilerServices;
+using AdventOfCode2023;
 using AdventOfCode2023.December_11;
 
 var input = File.ReadAllLines(
@@ -15,7 +17,48 @@ var input = File.ReadAllLines(
 
 var comparer = new RockComparer();
 var str = "...#.....OO.O.O.OO#O.#.#.O.OO......#.#..OO.OO#O.OO.#.O.#....OO###.O.O.#..OO..#.O..O..O....#O..O#OO#O";
+
+var splitted = str.Split('#');
+
+var hashCount = str.AsSpan().Count('#');
+Span<Range> destinations = new Range[hashCount];
+str.AsSpan().Split(destinations, '#');
+
+var buffer = new ArrayBufferWriter<char>();
+    //ArrayPool<char>.Shared.Rent(str.Length);
+
+Span<char> hash = stackalloc char[1];
+hash[0] = '#';
+
+for (int index = 0; index < destinations.Length; index++)
+{
+    var destination = destinations[index];
+
+    var (offset, length) = destination.GetOffsetAndLength(str.Length);
+
+    if (length == 0)
+    {
+        buffer.Write(hash);
+        continue;
+    }
+
+    var chunk = ArrayPool<char>.Shared.Rent(length);
+
+    str.AsSpan(destination).CopyTo(chunk);
+
+    Array.Sort(chunk, comparer);
+
+    buffer.Write(chunk.AsSpan(0, length));
+    buffer.Write(hash);
+    
+    ArrayPool<char>.Shared.Return(chunk);
+    //portion.AsSpan(0, length).CopyTo(buffer);
+}
+
+
 var modified = new string(str.OrderByDescending(static _ => _, comparer).ToArray());
+
+string f = "abc";
 
 var list = new List<string>();
 for (int i = 0; i < input.Length; i++)
@@ -78,22 +121,22 @@ class RockComparer : IComparer<char>
 {
     public int Compare(char x, char y)
     {
+        if ((int)x == 0 || (int)y == 0)
+            return 0;
+
         if (x.Equals(y))
         {
             return 0;
         }
 
-        if (x == '#' || y == '#')
-            return 0;
-
         if (x == 'O' && y == '.')
         {
-            return 1;
+            return -1;
         }
 
         if (x == '.' && y == 'O')
         {
-            return -1;
+            return 1;
         }
 
         throw new InvalidOperationException();
