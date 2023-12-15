@@ -1,12 +1,12 @@
 ﻿using AdventOfCode2023;
-using AdventOfCode2023.December_11;
+using AdventOfCode2023.December_15;
 
-var input = File.ReadAllLines(
+var text = File.ReadAllText(
     Path.Combine(
         AppDomain.CurrentDomain.BaseDirectory,
-        "December 11",
-        "Dec11_Input.txt"));
+        "December 15",
+        "Dec15_Input.txt"));
 
-IPuzzle puzzle = new December11();
-puzzle.SolvePart1(input);
-puzzle.SolvePart2(input);
+IPuzzle puzzle = new December15();
+puzzle.SolvePart1(text);
+//puzzle.SolvePart2(input);
