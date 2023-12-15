@@ -9,4 +9,4 @@ var text = File.ReadAllText(
 
 IPuzzle puzzle = new December15();
 puzzle.SolvePart1(text);
-//puzzle.SolvePart2(input);
+puzzle.SolvePart2(text);
